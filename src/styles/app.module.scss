@@ -17,6 +17,10 @@
     @include center-div;
     padding: none;
     margin:none;
+    .image{
+      width:100%;
+      height:80%;
+    }
   }
   .request{
     text-align:center;
