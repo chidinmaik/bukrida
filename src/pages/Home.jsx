@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useRef } from 'react';
 import styles from "../styles/app.module.scss";
 import {Aboy} from '../assets/imgs/index'
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom'
-
+import emailjs from '@emailjs/browser';
 
 const Home = () => {
     const[title,setTitle] = useState('');
@@ -11,16 +11,26 @@ const Home = () => {
     const [isPending, setIsPending] = useState(false);
     const handleClick = () => setIsOpen(!isOpen);
     const navigate = useNavigate();
-
+    const form = useRef();
+    
     const handleSubmit = (e) => {
       e.preventDefault();
       setIsPending(true);
-      navigate('/Success')
+
+
+      emailjs.sendForm('service_txt9res', 'template_8lvu2o4', form.current, 'hL5KC3W1wk2oXFx3v')
+      .then((result) => {
+          console.log(result.text);
+          navigate('/Success');
+      }, (error) => {
+          console.log(error.text);
+      });
+      
       }
   
     return ( 
         <div className={styles["container"]}>
-        <div className={styles["heading"]}>Bukarida</div>
+        <div className={styles["heading"]}>Bukrida</div>
         <div className={styles["image-container"]}>
           <img src={Aboy} alt="3d picture of a boy" className={styles["image"]}/>
         </div>
@@ -32,19 +42,20 @@ const Home = () => {
         </div>
   }
         {isOpen && 
-          <div className={styles["button-container"]}>
+          <form ref={form} onSubmit={handleSubmit} className={styles["button-container"]}>
               <input
                type="email"
+               name='user_email'
                required 
                value={title}
                placeholder="Enter your email address"
                className={styles["email"]}
                onChange= {(e) => setTitle(e.target.value)}
                />
-              <button type="submit" className={styles["button-summit"]} onClick={handleSubmit}>summit</button>
+              <button type="submit" className={styles["button-summit"]} >summit</button>
               { isPending && <div>loading...</div>}
   
-        </div>
+        </form>
         }
       </div>
      );

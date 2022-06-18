@@ -16,3 +16,8 @@
   align-items: center;
   justify-content: center;
 }
+@mixin media-xl {
+  @media screen and (min-width: 750px) and (max-width: 1600px){
+      @content;
+  }
+}
